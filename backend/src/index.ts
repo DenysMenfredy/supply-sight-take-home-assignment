@@ -132,6 +132,13 @@ const resolvers = {
             return product;
         },
         transferStock: (_, { id, from, to, qty }) => {
+            console.log(id, from, to, qty);
+            if (from === to) {
+                throw new Error("Source and destination warehouses must be different");
+            }
+            if (qty <= 0) {
+                throw new Error("Transfer quantity must be positive");
+            }
             const productFrom = products.find(p => p.id === id && p.warehouse === from);
             const productTo = products.find(p => p.id === id && p.warehouse === to);
             if (!productFrom) {
